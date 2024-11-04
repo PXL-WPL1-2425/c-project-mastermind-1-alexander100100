@@ -24,6 +24,7 @@ namespace Mastermind
         {
             InitializeComponent();
             GenerateRandomCode();
+            FillComboBoxes();
         }
         private void GenerateRandomCode()
         {
@@ -33,6 +34,16 @@ namespace Mastermind
                 _generatedCode[i] = _colors[random.Next(_colors.Count)];
             }
             this.Title = $"Mastermind - Code: {string.Join(", ", _generatedCode)}";
+        }
+        private void FillComboBoxes()
+        {
+            foreach (var color in _colors)
+            {
+                ComboBox1.Items.Add(color);
+                ComboBox2.Items.Add(color);
+                ComboBox3.Items.Add(color);
+                ComboBox4.Items.Add(color);
+            }
         }
     }
 }
