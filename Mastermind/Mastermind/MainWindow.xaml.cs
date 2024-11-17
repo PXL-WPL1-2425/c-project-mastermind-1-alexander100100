@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,34 +17,57 @@ namespace Mastermind
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly List<string> _colors = new List<string> { "Rood", "Geel", "Oranje", "Wit", "Groen", "Blauw" };
-        private readonly string[] _generatedCode = new string[4];
+        private readonly List<string> colors = new List<string> { "Red", "Yellow", "Orange", "White", "Green", "Blue" };
+
 
         public MainWindow()
-
         {
             InitializeComponent();
-            GenerateRandomCode();
             FillComboBoxes();
         }
-        private void GenerateRandomCode()
-        {
-            Random random = new Random();
-            for (int i = 0; i < 4; i++)
-            {
-                _generatedCode[i] = _colors[random.Next(_colors.Count)];
-            }
-            this.Title = $"Mastermind - Code: {string.Join(", ", _generatedCode)}";
-        }
+
         private void FillComboBoxes()
         {
-            foreach (var color in _colors)
+            ComboBox1.ItemsSource = colors;
+            ComboBox2.ItemsSource = colors;
+            ComboBox3.ItemsSource = colors;
+            ComboBox4.ItemsSource = colors;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           if (sender is ComboBox comboBox)
             {
-                ComboBox1.Items.Add(color);
-                ComboBox2.Items.Add(color);
-                ComboBox3.Items.Add(color);
-                ComboBox4.Items.Add(color);
+                string selectedColor = comboBox.SelectedItem as string;
+
+                if (comboBox == ComboBox1)
+                    UpdateLabel(Label1, selectedColor);
+                else if (comboBox == ComboBox2)
+                    UpdateLabel(Label2, selectedColor);
+                else if (comboBox == ComboBox3)
+                    UpdateLabel(Label3, selectedColor);
+                else if (comboBox == ComboBox4)
+                    UpdateLabel(Label4, selectedColor);
             }
+        }
+
+        private void UpdateLabel(Label label, string colorName)
+        {
+            if (colorName != null)
+            {
+                label.Content = colorName;
+                label.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorName));
+            }
+            else
+            {
+                label.Content = "None";
+                label.Background = Brushes.White;
+            }
+        }
+
+        private void Validatebtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
